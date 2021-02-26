@@ -18,6 +18,8 @@ To check or change mic settings go to "Recording devices" -> "Recording" -> "Pro
 
 To enable the plugin in Equalizer APO select "Plugins" -> "VST Plugin" and specify the plugin dll.
 
+See [detailed guide](https://medium.com/@bssankaran/free-and-open-source-software-noise-cancelling-for-working-from-home-edb1b4e9764e) provided by  [@bssankaran](https://github.com/bssankaran).
+
 ### Linux
 
 #### PulseAudio
@@ -37,7 +39,7 @@ Then, create the new device using:
 ```sh
 pacmd load-module module-null-sink sink_name=mic_denoised_out rate=48000
 pacmd load-module module-ladspa-sink sink_name=mic_raw_in sink_master=mic_denoised_out label=noise_suppressor_mono plugin=/path/to/librnnoise_ladspa.so control=50
-pacmd load-module module-loopback source=<your_mic_name> sink=mic_raw_in channels=1
+pacmd load-module module-loopback source=<your_mic_name> sink=mic_raw_in channels=1 source_dont_move=true sink_dont_move=true
 ```
 
 This needs to be executed every time PulseAudio is launched.
@@ -48,7 +50,7 @@ You can automate this by creating file in `~/.config/pulse/default.pa` with the 
 
 load-module module-null-sink sink_name=mic_denoised_out rate=48000
 load-module module-ladspa-sink sink_name=mic_raw_in sink_master=mic_denoised_out label=noise_suppressor_mono plugin=/path/to/librnnoise_ladspa.so control=50
-load-module module-loopback source=your_mic_name sink=mic_raw_in channels=1
+load-module module-loopback source=your_mic_name sink=mic_raw_in channels=1 source_dont_move=true sink_dont_move=true
 
 set-default-source mic_denoised_out.monitor
 ```
